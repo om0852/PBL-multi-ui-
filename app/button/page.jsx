@@ -6,7 +6,6 @@ const page = () => {
   return (
     <div>
         <Button4 text={"om salunke"} />
-      
     </div>
   )
 }
