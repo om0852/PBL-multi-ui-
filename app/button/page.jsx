@@ -1,11 +1,11 @@
 "use client";
 import React from 'react'
-import Button4 from './_components/Button_4'
+import Button4 from './_components/Button_15'
 
 const page = () => {
   return (
     <div>
-        <Button4 text="Button 1" />
+        <Button4 text={"om salunke"} />
       
     </div>
   )
