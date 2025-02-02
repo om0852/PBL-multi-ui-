@@ -2,55 +2,58 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import styled, { keyframes } from 'styled-components';
-
-const borderGlow = keyframes`
-  0%, 100% { border-color: rgba(255, 255, 255, 0.1); }
-  50% { border-color: rgba(255, 255, 255, 0.2); }
-`;
+import styled from 'styled-components';
 
 const Container = styled.div`
   padding: 1rem;
-  background: #121212;
+  background: #000;
   min-height: 100%;
   position: relative;
   overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 255, 0.1), transparent 70%);
+    pointer-events: none;
+  }
 `;
 
-const MinimalButton = styled(motion.button)`
+const FuturisticButton = styled(motion.button)`
   width: 100%;
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 0.5rem;
   padding: 1rem;
-  color: white;
+  color: #fff;
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
   
-  &:hover {
-    background: #202020;
-    border-color: rgba(255, 255, 255, 0.2);
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  
+  &:hover::before {
+    transform: translateX(100%);
   }
   
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover::after {
-    transform: scaleX(1);
+    inset: 0;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    background: linear-gradient(45deg, #00ffff, transparent) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
   }
 `;
 
@@ -60,46 +63,44 @@ const ContentWrapper = styled(motion.div)`
 `;
 
 const Content = styled.div`
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 255, 255, 0.03);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 0.5rem;
   padding: 1rem;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 255, 0.8);
   position: relative;
-  animation: ${borderGlow} 4s ease-in-out infinite;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), transparent);
+  }
 `;
 
 const Title = styled.span`
   font-size: 1.125rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.87);
-  letter-spacing: 0.5px;
-  position: relative;
-  z-index: 1;
+  font-weight: 500;
+  color: rgba(0, 255, 255, 0.9);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 `;
 
 const IconWrapper = styled(motion.div)`
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(0, 255, 255, 0.8);
   font-size: 1.25rem;
-  position: relative;
-  z-index: 1;
-`;
-
-const Accent = styled.div`
-  position: absolute;
-  width: ${props => props.size}px;
-  height: 1px;
-  background: ${props => props.color};
-  opacity: 0.1;
-  transform-origin: center;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 `;
 
 function AccordionItem({ title, content, isOpen, onClick }) {
   return (
     <div className="mb-4">
-      <MinimalButton
+      <FuturisticButton
         onClick={onClick}
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.99 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
       >
         <div className="flex justify-between items-center">
           <Title>{title}</Title>
@@ -113,7 +114,7 @@ function AccordionItem({ title, content, isOpen, onClick }) {
             ▼
           </IconWrapper>
         </div>
-      </MinimalButton>
+      </FuturisticButton>
       <AnimatePresence>
         {isOpen && (
           <ContentWrapper
@@ -148,10 +149,6 @@ export default function Accordion({ items, allowMultiple = false }) {
 
   return (
     <Container>
-      <Accent size={200} color="#fff" style={{ top: '10%', left: '10%', transform: 'rotate(45deg)' }} />
-      <Accent size={150} color="#fff" style={{ top: '30%', right: '20%', transform: 'rotate(-45deg)' }} />
-      <Accent size={180} color="#fff" style={{ bottom: '20%', left: '15%', transform: 'rotate(30deg)' }} />
-      <Accent size={160} color="#fff" style={{ bottom: '40%', right: '25%', transform: 'rotate(-30deg)' }} />
       {items.map((item, index) => (
         <AccordionItem
           key={index}
@@ -166,8 +163,7 @@ export default function Accordion({ items, allowMultiple = false }) {
 }
 
 // Export individual components
-export { Container as MinimalContainer };
-export { MinimalButton };
-export { Content as MinimalContent };
-export { AccordionItem as MinimalAccordionItem };
-export { Accent };
+export { Container as FuturisticContainer };
+export { FuturisticButton };
+export { Content as FuturisticContent };
+export { AccordionItem as FuturisticAccordionItem };

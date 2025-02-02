@@ -4,53 +4,61 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled, { keyframes } from 'styled-components';
 
-const borderGlow = keyframes`
-  0%, 100% { border-color: rgba(255, 255, 255, 0.1); }
-  50% { border-color: rgba(255, 255, 255, 0.2); }
+const borderFlow = keyframes`
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+`;
+
+const neonPulse = keyframes`
+  0%, 100% { filter: drop-shadow(0 0 2px #ff00ff) drop-shadow(0 0 4px #00ffff); }
+  50% { filter: drop-shadow(0 0 6px #ff00ff) drop-shadow(0 0 12px #00ffff); }
 `;
 
 const Container = styled.div`
   padding: 1rem;
-  background: #121212;
+  background: #0a0a0a;
   min-height: 100%;
   position: relative;
   overflow: hidden;
 `;
 
-const MinimalButton = styled(motion.button)`
+const NeonButton = styled(motion.button)`
   width: 100%;
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.8);
   padding: 1rem;
   color: white;
   position: relative;
+  border: none;
+  border-radius: 4px;
   overflow: hidden;
-  transition: all 0.3s ease;
   
-  &:hover {
-    background: #202020;
-    border-color: rgba(255, 255, 255, 0.2);
-  }
-  
-  &::after {
+  &::before {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
+    inset: 0;
+    padding: 2px;
+    border-radius: 4px;
     background: linear-gradient(
       90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
+      #ff00ff,
+      #00ffff,
+      #ff00ff,
+      #00ffff
     );
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
+    background-size: 300% 100%;
+    animation: ${borderFlow} 4s linear infinite;
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
   }
   
-  &:hover::after {
-    transform: scaleX(1);
+  &:hover {
+    animation: ${neonPulse} 2s ease-in-out infinite;
   }
 `;
 
@@ -60,46 +68,66 @@ const ContentWrapper = styled(motion.div)`
 `;
 
 const Content = styled.div`
-  background: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.8);
   padding: 1rem;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 255, 0.9);
   position: relative;
-  animation: ${borderGlow} 4s ease-in-out infinite;
+  border-radius: 4px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: 4px;
+    background: linear-gradient(
+      90deg,
+      #00ffff,
+      #ff00ff,
+      #00ffff,
+      #ff00ff
+    );
+    background-size: 300% 100%;
+    animation: ${borderFlow} 4s linear infinite;
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
 `;
 
 const Title = styled.span`
   font-size: 1.125rem;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.87);
-  letter-spacing: 0.5px;
+  font-weight: 500;
+  color: white;
+  text-shadow: 
+    0 0 5px #ff00ff,
+    0 0 10px #00ffff;
   position: relative;
   z-index: 1;
 `;
 
 const IconWrapper = styled(motion.div)`
-  color: rgba(255, 255, 255, 0.6);
+  color: white;
   font-size: 1.25rem;
+  text-shadow: 
+    0 0 5px #ff00ff,
+    0 0 10px #00ffff;
   position: relative;
   z-index: 1;
-`;
-
-const Accent = styled.div`
-  position: absolute;
-  width: ${props => props.size}px;
-  height: 1px;
-  background: ${props => props.color};
-  opacity: 0.1;
-  transform-origin: center;
 `;
 
 function AccordionItem({ title, content, isOpen, onClick }) {
   return (
     <div className="mb-4">
-      <MinimalButton
+      <NeonButton
         onClick={onClick}
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.99 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
       >
         <div className="flex justify-between items-center">
           <Title>{title}</Title>
@@ -113,7 +141,7 @@ function AccordionItem({ title, content, isOpen, onClick }) {
             ▼
           </IconWrapper>
         </div>
-      </MinimalButton>
+      </NeonButton>
       <AnimatePresence>
         {isOpen && (
           <ContentWrapper
@@ -148,10 +176,6 @@ export default function Accordion({ items, allowMultiple = false }) {
 
   return (
     <Container>
-      <Accent size={200} color="#fff" style={{ top: '10%', left: '10%', transform: 'rotate(45deg)' }} />
-      <Accent size={150} color="#fff" style={{ top: '30%', right: '20%', transform: 'rotate(-45deg)' }} />
-      <Accent size={180} color="#fff" style={{ bottom: '20%', left: '15%', transform: 'rotate(30deg)' }} />
-      <Accent size={160} color="#fff" style={{ bottom: '40%', right: '25%', transform: 'rotate(-30deg)' }} />
       {items.map((item, index) => (
         <AccordionItem
           key={index}
@@ -166,8 +190,7 @@ export default function Accordion({ items, allowMultiple = false }) {
 }
 
 // Export individual components
-export { Container as MinimalContainer };
-export { MinimalButton };
-export { Content as MinimalContent };
-export { AccordionItem as MinimalAccordionItem };
-export { Accent };
+export { Container as NeonContainer };
+export { NeonButton };
+export { Content as NeonContent };
+export { AccordionItem as NeonAccordionItem };
