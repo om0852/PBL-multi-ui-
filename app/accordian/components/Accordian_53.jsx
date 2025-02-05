@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -69,7 +68,7 @@ const IconWrapper = styled(motion.div)`
   text-shadow: 0 0 5px #00ff9d;
 `;
 
-const CyberLine = styled.div<{ delay: number }>`
+const CyberLine = styled.div`
   position: absolute;
   width: 100px;
   height: 2px;
@@ -85,14 +84,7 @@ const CyberLine = styled.div<{ delay: number }>`
   }
 `;
 
-interface AccordionItemProps {
-  title: string;
-  content: string;
-  isOpen: boolean;
-  onClick: () => void;
-}
-
-function AccordionItem({ title, content, isOpen, onClick }: AccordionItemProps) {
+function AccordionItem({ title, content, isOpen, onClick }) {
   return (
     <div className="mb-4">
       <CyberButton
@@ -131,15 +123,10 @@ function AccordionItem({ title, content, isOpen, onClick }: AccordionItemProps) 
   );
 }
 
-interface AccordionProps {
-  items: Array<{ title: string; content: string }>;
-  allowMultiple?: boolean;
-}
+export default function Accordion({ items, allowMultiple = false }) {
+  const [openIndexes, setOpenIndexes] = useState([]);
 
-export default function Accordion({ items, allowMultiple = false }: AccordionProps) {
-  const [openIndexes, setOpenIndexes] = useState<number[]>([]);
-
-  const handleClick = (index: number) => {
+  const handleClick = (index) => {
     if (allowMultiple) {
       setOpenIndexes(openIndexes.includes(index)
         ? openIndexes.filter(i => i !== index)
@@ -173,4 +160,4 @@ export default function Accordion({ items, allowMultiple = false }: AccordionPro
 export { Container as CyberContainer };
 export { CyberButton };
 export { Content as CyberContent };
-export { AccordionItem as CyberAccordionItem }; 
+export { AccordionItem as CyberAccordionItem };

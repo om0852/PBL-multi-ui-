@@ -4,31 +4,35 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled, { keyframes } from 'styled-components';
 
-const runeGlow = keyframes`
-  0% { transform: rotate(0deg) scale(1); opacity: 0.3; }
-  50% { transform: rotate(180deg) scale(1.2); opacity: 0.6; }
-  100% { transform: rotate(360deg) scale(1); opacity: 0.3; }
+const mercuryFlow = keyframes`
+  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); filter: brightness(1); }
+  50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); filter: brightness(1.2); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); filter: brightness(1); }
 `;
 
-const magicPulse = keyframes`
-  0% { transform: scale(1); filter: hue-rotate(0deg); }
-  50% { transform: scale(1.1); filter: hue-rotate(180deg); }
-  100% { transform: scale(1); filter: hue-rotate(360deg); }
+const rippleEffect = keyframes`
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 0.5; }
 `;
 
 const Container = styled.div`
   padding: 1rem;
-  background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%);
+  background: linear-gradient(135deg, #2a2a2a 0%, #3d3d3d 100%);
   min-height: 100%;
   position: relative;
   overflow: hidden;
 `;
 
-const RuneButton = styled(motion.button)`
+const MetalButton = styled(motion.button)`
   width: 100%;
-  background: rgba(26, 11, 46, 0.6);
+  background: linear-gradient(
+    145deg,
+    rgba(192, 192, 192, 0.1),
+    rgba(128, 128, 128, 0.2)
+  );
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(147, 51, 234, 0.3);
+  border: none;
   padding: 1.5rem;
   color: #fff;
   position: relative;
@@ -37,24 +41,25 @@ const RuneButton = styled(motion.button)`
   text-align: left;
   margin: 1rem 0;
   box-shadow: 
-    0 0 30px rgba(147, 51, 234, 0.2),
-    inset 0 0 20px rgba(147, 51, 234, 0.1);
+    0 5px 15px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(
-      circle at center,
-      rgba(147, 51, 234, 0.2),
-      transparent 70%
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(192, 192, 192, 0.2),
+      transparent
     );
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
   }
 
   &:hover::before {
-    opacity: 1;
+    transform: translateX(100%);
   }
 `;
 
@@ -65,103 +70,96 @@ const ContentWrapper = styled(motion.div)`
 `;
 
 const Content = styled.div`
-  background: rgba(26, 11, 46, 0.4);
+  background: linear-gradient(
+    145deg,
+    rgba(192, 192, 192, 0.05),
+    rgba(128, 128, 128, 0.1)
+  );
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(147, 51, 234, 0.2);
+  border: none;
   padding: 1.5rem;
   color: #fff;
   position: relative;
   border-radius: 12px;
   box-shadow: 
-    0 0 20px rgba(147, 51, 234, 0.15),
-    inset 0 0 15px rgba(147, 51, 234, 0.1);
+    0 5px 15px rgba(0, 0, 0, 0.2),
+    inset 0 0 15px rgba(255, 255, 255, 0.05);
 `;
 
 const Title = styled.span`
   font-size: 1.125rem;
   font-weight: 500;
-  background: linear-gradient(45deg, #9333ea, #c084fc);
+  background: linear-gradient(45deg, #fff, #c0c0c0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 1;
   position: relative;
-  font-family: 'Cinzel', serif;
 `;
 
 const IconWrapper = styled(motion.div)`
-  color: #9333ea;
+  color: #fff;
   font-size: 1.25rem;
-  text-shadow: 0 0 10px rgba(147, 51, 234, 0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
-const RuneSymbol = styled(motion.div)`
+const MercuryPool = styled(motion.div)`
   position: absolute;
   width: ${props => props.size}px;
   height: ${props => props.size}px;
-  color: rgba(147, 51, 234, 0.6);
-  font-family: 'Runic', 'Arial', sans-serif;
-  font-size: ${props => props.size * 0.8}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: ${runeGlow} ${props => 4 + props.delay}s linear infinite;
-  animation-delay: ${props => props.delay}s;
-  
-  &::before {
-    content: '${props => props.symbol}';
-  }
-`;
-
-const MagicCircle = styled(motion.div)`
-  position: absolute;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  border: 2px solid rgba(147, 51, 234, 0.3);
+  background: radial-gradient(
+    circle at center,
+    rgba(192, 192, 192, 0.8),
+    rgba(128, 128, 128, 0.4)
+  );
   border-radius: 50%;
-  animation: ${magicPulse} ${props => 3 + props.delay}s ease-in-out infinite;
+  filter: blur(2px);
+  animation: ${mercuryFlow} ${props => 6 + props.delay}s linear infinite;
   animation-delay: ${props => props.delay}s;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border: 2px solid rgba(192, 132, 252, 0.2);
-    border-radius: 50%;
-    transform: rotate(45deg);
-  }
 `;
 
-export default function Accordion({ items }) {
+const MetalRipple = styled(motion.div)`
+  position: absolute;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  background: linear-gradient(
+    145deg,
+    rgba(192, 192, 192, 0.4),
+    rgba(128, 128, 128, 0.2)
+  );
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: ${rippleEffect} ${props => 3 + props.delay}s ease-in-out infinite;
+  animation-delay: ${props => props.delay}s;
+`;
+
+const Accordion = ({ items }) => {
   const [openIndex, setOpenIndex] = useState(null);
-  
-  const runeSymbols = ['ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ'];
 
   return (
     <Container>
       {items.map((item, index) => (
         <div key={index} className="mb-4">
-          <RuneButton
+          <MetalButton
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {[...Array(6)].map((_, i) => (
-              <RuneSymbol
+            {[...Array(4)].map((_, i) => (
+              <MercuryPool
                 key={i}
-                size={20 + Math.random() * 20}
-                symbol={runeSymbols[i % runeSymbols.length]}
-                delay={i * 0.5}
+                size={60 + Math.random() * 40}
+                delay={i * 0.8}
                 style={{
                   top: `${Math.random() * 100}%`,
                   left: `${Math.random() * 100}%`,
                 }}
               />
             ))}
-            {[...Array(4)].map((_, i) => (
-              <MagicCircle
+            {[...Array(6)].map((_, i) => (
+              <MetalRipple
                 key={i}
-                size={40 + Math.random() * 40}
+                size={20 + Math.random() * 20}
                 delay={i * 0.3}
                 style={{
                   top: `${Math.random() * 100}%`,
@@ -181,7 +179,7 @@ export default function Accordion({ items }) {
                 ▼
               </IconWrapper>
             </div>
-          </RuneButton>
+          </MetalButton>
           <AnimatePresence>
             {openIndex === index && (
               <ContentWrapper
@@ -200,4 +198,6 @@ export default function Accordion({ items }) {
       ))}
     </Container>
   );
-}
+};
+
+export default Accordion;

@@ -4,41 +4,41 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled, { keyframes } from 'styled-components';
 
-const runeGlow = keyframes`
-  0% { transform: rotate(0deg) scale(1); opacity: 0.3; }
-  50% { transform: rotate(180deg) scale(1.2); opacity: 0.6; }
-  100% { transform: rotate(360deg) scale(1); opacity: 0.3; }
+const solarFlare = keyframes`
+  0% { transform: scale(1) rotate(0deg); opacity: 0.3; filter: hue-rotate(0deg); }
+  50% { transform: scale(1.5) rotate(180deg); opacity: 0.6; filter: hue-rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); opacity: 0.3; filter: hue-rotate(360deg); }
 `;
 
-const magicPulse = keyframes`
-  0% { transform: scale(1); filter: hue-rotate(0deg); }
-  50% { transform: scale(1.1); filter: hue-rotate(180deg); }
-  100% { transform: scale(1); filter: hue-rotate(360deg); }
+const plasmaFlow = keyframes`
+  0% { transform: translateX(-100%) scale(1); opacity: 0.3; }
+  50% { transform: translateX(0%) scale(1.2); opacity: 0.6; }
+  100% { transform: translateX(100%) scale(1); opacity: 0.3; }
 `;
 
 const Container = styled.div`
   padding: 1rem;
-  background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%);
+  background: linear-gradient(135deg, #1a0f00 0%, #4a1500 100%);
   min-height: 100%;
   position: relative;
   overflow: hidden;
 `;
 
-const RuneButton = styled(motion.button)`
+const SolarButton = styled(motion.button)`
   width: 100%;
-  background: rgba(26, 11, 46, 0.6);
+  background: rgba(74, 21, 0, 0.6);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(147, 51, 234, 0.3);
+  border: 2px solid rgba(255, 140, 0, 0.3);
   padding: 1.5rem;
   color: #fff;
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 16px;
   text-align: left;
   margin: 1rem 0;
   box-shadow: 
-    0 0 30px rgba(147, 51, 234, 0.2),
-    inset 0 0 20px rgba(147, 51, 234, 0.1);
+    0 0 30px rgba(255, 140, 0, 0.2),
+    inset 0 0 20px rgba(255, 140, 0, 0.1);
 
   &::before {
     content: '';
@@ -46,7 +46,7 @@ const RuneButton = styled(motion.button)`
     inset: 0;
     background: radial-gradient(
       circle at center,
-      rgba(147, 51, 234, 0.2),
+      rgba(255, 140, 0, 0.2),
       transparent 70%
     );
     opacity: 0;
@@ -65,107 +65,102 @@ const ContentWrapper = styled(motion.div)`
 `;
 
 const Content = styled.div`
-  background: rgba(26, 11, 46, 0.4);
+  background: rgba(74, 21, 0, 0.4);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(147, 51, 234, 0.2);
+  border: 2px solid rgba(255, 140, 0, 0.2);
   padding: 1.5rem;
   color: #fff;
   position: relative;
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 
-    0 0 20px rgba(147, 51, 234, 0.15),
-    inset 0 0 15px rgba(147, 51, 234, 0.1);
+    0 0 20px rgba(255, 140, 0, 0.15),
+    inset 0 0 15px rgba(255, 140, 0, 0.1);
 `;
 
 const Title = styled.span`
   font-size: 1.125rem;
   font-weight: 500;
-  background: linear-gradient(45deg, #9333ea, #c084fc);
+  background: linear-gradient(45deg, #ff8c00, #ffa500);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
+  text-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
   z-index: 1;
   position: relative;
-  font-family: 'Cinzel', serif;
 `;
 
 const IconWrapper = styled(motion.div)`
-  color: #9333ea;
+  color: #ff8c00;
   font-size: 1.25rem;
-  text-shadow: 0 0 10px rgba(147, 51, 234, 0.5);
+  text-shadow: 0 0 10px rgba(255, 140, 0, 0.5);
 `;
 
-const RuneSymbol = styled(motion.div)`
+const SunFlare = styled(motion.div)`
   position: absolute;
   width: ${props => props.size}px;
   height: ${props => props.size}px;
-  color: rgba(147, 51, 234, 0.6);
-  font-family: 'Runic', 'Arial', sans-serif;
-  font-size: ${props => props.size * 0.8}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: ${runeGlow} ${props => 4 + props.delay}s linear infinite;
-  animation-delay: ${props => props.delay}s;
-  
-  &::before {
-    content: '${props => props.symbol}';
-  }
-`;
-
-const MagicCircle = styled(motion.div)`
-  position: absolute;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  border: 2px solid rgba(147, 51, 234, 0.3);
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 165, 0, 0.6),
+    rgba(255, 140, 0, 0.3),
+    transparent
+  );
   border-radius: 50%;
-  animation: ${magicPulse} ${props => 3 + props.delay}s ease-in-out infinite;
+  filter: blur(5px);
+  animation: ${solarFlare} ${props => 6 + props.delay}s linear infinite;
   animation-delay: ${props => props.delay}s;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border: 2px solid rgba(192, 132, 252, 0.2);
-    border-radius: 50%;
-    transform: rotate(45deg);
-  }
 `;
 
-export default function Accordion({ items }) {
+const PlasmaStream = styled(motion.div)`
+  position: absolute;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 140, 0, 0.4),
+    rgba(255, 165, 0, 0.6),
+    rgba(255, 140, 0, 0.4),
+    transparent
+  );
+  filter: blur(3px);
+  transform-origin: center;
+  animation: ${plasmaFlow} ${props => 3 + props.delay}s linear infinite;
+  animation-delay: ${props => props.delay}s;
+`;
+
+function Accordion({ items }) {
   const [openIndex, setOpenIndex] = useState(null);
-  
-  const runeSymbols = ['ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ'];
 
   return (
     <Container>
       {items.map((item, index) => (
         <div key={index} className="mb-4">
-          <RuneButton
+          <SolarButton
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {[...Array(6)].map((_, i) => (
-              <RuneSymbol
+            {[...Array(5)].map((_, i) => (
+              <SunFlare
                 key={i}
-                size={20 + Math.random() * 20}
-                symbol={runeSymbols[i % runeSymbols.length]}
-                delay={i * 0.5}
+                size={80 + Math.random() * 60}
+                delay={i * 0.8}
                 style={{
                   top: `${Math.random() * 100}%`,
                   left: `${Math.random() * 100}%`,
                 }}
               />
             ))}
-            {[...Array(4)].map((_, i) => (
-              <MagicCircle
+            {[...Array(6)].map((_, i) => (
+              <PlasmaStream
                 key={i}
-                size={40 + Math.random() * 40}
+                width={100 + Math.random() * 100}
+                height={4 + Math.random() * 4}
                 delay={i * 0.3}
                 style={{
                   top: `${Math.random() * 100}%`,
                   left: `${Math.random() * 100}%`,
+                  transform: `rotate(${Math.random() * 360}deg)`,
                 }}
               />
             ))}
@@ -181,7 +176,7 @@ export default function Accordion({ items }) {
                 ▼
               </IconWrapper>
             </div>
-          </RuneButton>
+          </SolarButton>
           <AnimatePresence>
             {openIndex === index && (
               <ContentWrapper
@@ -201,3 +196,5 @@ export default function Accordion({ items }) {
     </Container>
   );
 }
+
+export default Accordion;

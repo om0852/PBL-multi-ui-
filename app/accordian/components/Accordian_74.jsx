@@ -4,50 +4,50 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled, { keyframes } from 'styled-components';
 
-const runeGlow = keyframes`
-  0% { transform: rotate(0deg) scale(1); opacity: 0.3; }
-  50% { transform: rotate(180deg) scale(1.2); opacity: 0.6; }
-  100% { transform: rotate(360deg) scale(1); opacity: 0.3; }
+const matrixRain = keyframes`
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
 `;
 
-const magicPulse = keyframes`
-  0% { transform: scale(1); filter: hue-rotate(0deg); }
-  50% { transform: scale(1.1); filter: hue-rotate(180deg); }
-  100% { transform: scale(1); filter: hue-rotate(360deg); }
+const digitFlicker = keyframes`
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
 `;
 
 const Container = styled.div`
   padding: 1rem;
-  background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 100%);
+  background: linear-gradient(135deg, #000000 0%, #001a00 100%);
   min-height: 100%;
   position: relative;
   overflow: hidden;
 `;
 
-const RuneButton = styled(motion.button)`
+const DigitalButton = styled(motion.button)`
   width: 100%;
-  background: rgba(26, 11, 46, 0.6);
+  background: rgba(0, 26, 0, 0.6);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(147, 51, 234, 0.3);
+  border: 2px solid rgba(0, 255, 0, 0.2);
   padding: 1.5rem;
-  color: #fff;
+  color: #00ff00;
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 4px;
   text-align: left;
   margin: 1rem 0;
   box-shadow: 
-    0 0 30px rgba(147, 51, 234, 0.2),
-    inset 0 0 20px rgba(147, 51, 234, 0.1);
+    0 0 30px rgba(0, 255, 0, 0.1),
+    inset 0 0 20px rgba(0, 255, 0, 0.1);
+  font-family: 'Courier New', monospace;
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(
-      circle at center,
-      rgba(147, 51, 234, 0.2),
-      transparent 70%
+    background: linear-gradient(
+      transparent 0%,
+      rgba(0, 255, 0, 0.1) 50%,
+      transparent 100%
     );
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -65,109 +65,98 @@ const ContentWrapper = styled(motion.div)`
 `;
 
 const Content = styled.div`
-  background: rgba(26, 11, 46, 0.4);
+  background: rgba(0, 26, 0, 0.4);
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(147, 51, 234, 0.2);
+  border: 2px solid rgba(0, 255, 0, 0.1);
   padding: 1.5rem;
-  color: #fff;
+  color: #00ff00;
   position: relative;
-  border-radius: 12px;
+  border-radius: 4px;
   box-shadow: 
-    0 0 20px rgba(147, 51, 234, 0.15),
-    inset 0 0 15px rgba(147, 51, 234, 0.1);
+    0 0 20px rgba(0, 255, 0, 0.1),
+    inset 0 0 15px rgba(0, 255, 0, 0.1);
+  font-family: 'Courier New', monospace;
 `;
 
 const Title = styled.span`
   font-size: 1.125rem;
   font-weight: 500;
-  background: linear-gradient(45deg, #9333ea, #c084fc);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
   z-index: 1;
   position: relative;
-  font-family: 'Cinzel', serif;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
 `;
 
 const IconWrapper = styled(motion.div)`
-  color: #9333ea;
+  color: #00ff00;
   font-size: 1.25rem;
-  text-shadow: 0 0 10px rgba(147, 51, 234, 0.5);
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 `;
 
-const RuneSymbol = styled(motion.div)`
+const RainDrop = styled(motion.div)`
   position: absolute;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  color: rgba(147, 51, 234, 0.6);
-  font-family: 'Runic', 'Arial', sans-serif;
-  font-size: ${props => props.size * 0.8}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: ${runeGlow} ${props => 4 + props.delay}s linear infinite;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+  animation: ${matrixRain} ${props => props.speed}s linear infinite;
   animation-delay: ${props => props.delay}s;
-  
-  &::before {
-    content: '${props => props.symbol}';
-  }
+  opacity: 0.5;
 `;
 
-const MagicCircle = styled(motion.div)`
+const DigitalCharacter = styled(motion.div)`
   position: absolute;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  border: 2px solid rgba(147, 51, 234, 0.3);
-  border-radius: 50%;
-  animation: ${magicPulse} ${props => 3 + props.delay}s ease-in-out infinite;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  animation: ${digitFlicker} ${props => 1 + Math.random()}s ease-in-out infinite;
   animation-delay: ${props => props.delay}s;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border: 2px solid rgba(192, 132, 252, 0.2);
-    border-radius: 50%;
-    transform: rotate(45deg);
-  }
+  opacity: 0.5;
 `;
 
 export default function Accordion({ items }) {
   const [openIndex, setOpenIndex] = useState(null);
-  
-  const runeSymbols = ['ᚠ', 'ᚢ', 'ᚦ', 'ᚨ', 'ᚱ', 'ᚲ', 'ᚷ', 'ᚹ'];
+
+  const matrixCharacters = '日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍ';
+  const getRandomChar = () => matrixCharacters[Math.floor(Math.random() * matrixCharacters.length)];
 
   return (
     <Container>
       {items.map((item, index) => (
         <div key={index} className="mb-4">
-          <RuneButton
+          <DigitalButton
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {[...Array(6)].map((_, i) => (
-              <RuneSymbol
+            {[...Array(10)].map((_, i) => (
+              <RainDrop
                 key={i}
-                size={20 + Math.random() * 20}
-                symbol={runeSymbols[i % runeSymbols.length]}
-                delay={i * 0.5}
-                style={{
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * 100}%`,
-                }}
-              />
-            ))}
-            {[...Array(4)].map((_, i) => (
-              <MagicCircle
-                key={i}
-                size={40 + Math.random() * 40}
                 delay={i * 0.3}
+                speed={2 + Math.random() * 2}
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  transform: 'translateY(-100%)',
+                }}
+              >
+                {[...Array(8)].map(() => getRandomChar()).join('')}
+              </RainDrop>
+            ))}
+            {[...Array(20)].map((_, i) => (
+              <DigitalCharacter
+                key={i}
+                delay={i * 0.1}
                 style={{
                   top: `${Math.random() * 100}%`,
                   left: `${Math.random() * 100}%`,
                 }}
-              />
+              >
+                {getRandomChar()}
+              </DigitalCharacter>
             ))}
             <div className="flex justify-between items-center">
               <Title>{item.title}</Title>
@@ -181,7 +170,7 @@ export default function Accordion({ items }) {
                 ▼
               </IconWrapper>
             </div>
-          </RuneButton>
+          </DigitalButton>
           <AnimatePresence>
             {openIndex === index && (
               <ContentWrapper
