@@ -22,7 +22,13 @@ const WaveCheckbox = ({ value, onChange, disabled = false, color = "blue" }) => 
 
   return (
     <label
+<<<<<<< HEAD
       className={`wave-checkbox relative w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 cursor-pointer ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+=======
+      className={`wave-checkbox relative w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 cursor-pointer ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+>>>>>>> df99f82cf5497f95d94989c06687af3608115484
     >
       <input
         type="checkbox"
@@ -67,4 +73,8 @@ const WaveCheckbox = ({ value, onChange, disabled = false, color = "blue" }) => 
   );
 };
 
+<<<<<<< HEAD
 export default WaveCheckbox;
+=======
+export default WaveCheckbox;
+>>>>>>> df99f82cf5497f95d94989c06687af3608115484

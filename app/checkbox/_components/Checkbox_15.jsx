@@ -62,4 +62,8 @@ const RippleCheckbox = ({ value, onChange, disabled = false, color = "blue" }) =
   );
 };
 
+<<<<<<< HEAD
 export default RippleCheckbox;
+=======
+export default RippleCheckbox;
+>>>>>>> df99f82cf5497f95d94989c06687af3608115484
