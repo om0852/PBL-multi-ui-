@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const Countdown_52 = ({ to, interval = 1000, className = "", onComplete }) => {
+const Countdown_61 = ({ to, interval = 1000, className = "", onComplete }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -12,11 +12,8 @@ const Countdown_52 = ({ to, interval = 1000, className = "", onComplete }) => {
     const timer = setInterval(() => {
       const remaining = to.getTime() - Date.now();
       setTimeLeft(Math.max(0, remaining));
-      if (remaining <= 0 && onComplete) {
-        onComplete();
-      }
+      if (remaining <= 0 && onComplete) onComplete();
     }, interval);
-
     return () => clearInterval(timer);
   }, [to, interval, onComplete]);
 
@@ -29,37 +26,37 @@ const Countdown_52 = ({ to, interval = 1000, className = "", onComplete }) => {
   const TimeUnit = ({ value, label }) => (
     <motion.div
       className="relative group"
-      whileHover={{ scale: 1.1 }}
-      transition={{ type: "spring", stiffness: 400 }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ type: "spring", stiffness: 300 }}
     >
-      <div className="absolute inset-0 bg-blue-500 rounded-lg blur-lg opacity-75 group-hover:opacity-100 transition-opacity" />
-      <div className="relative bg-black px-6 py-4 rounded-lg border border-blue-400">
+      <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-lg blur opacity-75" />
+      <div className="relative bg-black p-6 rounded-lg border border-white/10">
         <motion.span
-          className="block text-5xl font-mono font-bold text-blue-400"
+          className="block text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           key={value}
         >
           {value.toString().padStart(2, "0")}
         </motion.span>
-        <span className="text-xs text-blue-300 mt-2 block text-center">{label}</span>
+        <span className="text-xs text-white/60 mt-2 block text-center">{label}</span>
       </div>
     </motion.div>
   );
 
   return (
-    <div className={`p-8 bg-gray-900 rounded-xl ${className}`}>
+    <div className={`bg-gray-900 p-12 rounded-xl ${className}`}>
       <motion.div
         className="flex flex-col items-center space-y-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h2 className="text-2xl font-bold text-blue-400">Countdown Timer</h2>
+        <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500">
+          Rainbow Timer
+        </h2>
         <div className="flex space-x-6">
           <TimeUnit value={hours} label="HOURS" />
-          <div className="text-blue-400 text-4xl font-bold self-center animate-pulse">:</div>
           <TimeUnit value={minutes} label="MINUTES" />
-          <div className="text-blue-400 text-4xl font-bold self-center animate-pulse">:</div>
           <TimeUnit value={seconds} label="SECONDS" />
         </div>
       </motion.div>
@@ -67,4 +64,4 @@ const Countdown_52 = ({ to, interval = 1000, className = "", onComplete }) => {
   );
 };
 
-export default Countdown_52;
+export default Countdown_61;

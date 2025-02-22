@@ -24,7 +24,7 @@ const sizeClasses = {
   }
 };
 
-const Countdown_48 = ({ to, interval = 1, className = "", onComplete, size = "md" }) => {
+const Countdown_50 = ({ to, interval = 1, className = "", onComplete, size = "md" }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -57,56 +57,69 @@ const Countdown_48 = ({ to, interval = 1, className = "", onComplete, size = "md
 
   const TimeUnit = ({ value, label }) => (
     <motion.div
-      className={`${sizeClasses[size].container} bg-gray-900 rounded-xl flex flex-col items-center justify-center border-4 border-gray-700`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+      className={`${sizeClasses[size].container} bg-white/80 rounded-md shadow-lg flex flex-col items-center justify-center border border-gray-300`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 150, damping: 20 }}
     >
       <motion.span
-        className={`${sizeClasses[size].value} font-mono text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500`}
+        className={`${sizeClasses[size].value} font-semibold text-gray-900`}
         animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.6, 1, 0.6]
+          opacity: [0, 1, 0],
+          y: [0, -10, 0]
         }}
         transition={{
-          duration: 1.5,
+          duration: 1,
           repeat: Infinity,
           ease: "easeInOut"
         }}
       >
         {value.toString().padStart(2, "0")}
       </motion.span>
-      <span className={`${sizeClasses[size].label} text-gray-500`}>{label}</span>
+      <span className={`${sizeClasses[size].label} text-gray-600`}>{label}</span>
     </motion.div>
   );
 
   return (
     <div className={`flex justify-center items-center ${className}`}>
-      <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+      <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
         <motion.h2
-          className="text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400"
-          initial={{ y: -50, opacity: 0 }}
+          className="text-3xl font-medium text-center text-gray-800"
+          initial={{ y: -30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Countdown Timer
+          Time Remaining
         </motion.h2>
 
         <div className="flex items-center gap-4">
           <TimeUnit value={hours} label="HRS" />
           <motion.span
-            className={`${sizeClasses[size].separator} text-gray-400 font-light`}
-            animate={{ opacity: [1, 0.3, 1], scale: [1, 1.2, 1] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            className={`${sizeClasses[size].separator} text-gray-500 font-light`}
+            animate={{
+              opacity: [1, 0.5, 1],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           >
             :
           </motion.span>
           <TimeUnit value={minutes} label="MIN" />
           <motion.span
-            className={`${sizeClasses[size].separator} text-gray-400 font-light`}
-            animate={{ opacity: [1, 0.3, 1], scale: [1, 1.2, 1] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+            className={`${sizeClasses[size].separator} text-gray-500 font-light`}
+            animate={{
+              opacity: [1, 0.5, 1],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
           >
             :
           </motion.span>
@@ -117,4 +130,4 @@ const Countdown_48 = ({ to, interval = 1, className = "", onComplete, size = "md
   );
 };
 
-export default Countdown_48;
+export default Countdown_50;
