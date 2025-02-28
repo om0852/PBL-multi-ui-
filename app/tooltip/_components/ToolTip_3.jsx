@@ -3,14 +3,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Tooltip_2 = ({
+const Tooltip_3 = ({
   text,
   position = 'top',
   children,
-  glassColor = 'rgba(255, 255, 255, 0.1)',
-  borderColor = 'rgba(255, 255, 255, 0.2)',
-  textColor = '#ffffff',
-  blur = 10,
+  neonColor = '#00ff00',
+  glowIntensity = 1,
   delay = 0.2,
   className = '',
 }) => {
@@ -34,15 +32,15 @@ const Tooltip_2 = ({
   const getInitialAnimation = () => {
     switch (position) {
       case 'top':
-        return { opacity: 0, y: 10, scale: 0.95 };
+        return { opacity: 0, y: 10, scale: 0.9 };
       case 'bottom':
-        return { opacity: 0, y: -10, scale: 0.95 };
+        return { opacity: 0, y: -10, scale: 0.9 };
       case 'left':
-        return { opacity: 0, x: 10, scale: 0.95 };
+        return { opacity: 0, x: 10, scale: 0.9 };
       case 'right':
-        return { opacity: 0, x: -10, scale: 0.95 };
+        return { opacity: 0, x: -10, scale: 0.9 };
       default:
-        return { opacity: 0, y: 10, scale: 0.95 };
+        return { opacity: 0, y: 10, scale: 0.9 };
     }
   };
 
@@ -59,20 +57,28 @@ const Tooltip_2 = ({
             initial={getInitialAnimation()}
             animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
             exit={getInitialAnimation()}
-            transition={{ duration: 0.2, delay }}
+            transition={{ 
+              duration: 0.3,
+              delay,
+              type: 'spring',
+              stiffness: 300,
+              damping: 20
+            }}
             style={{
               ...getPosition(),
               position: 'absolute',
               padding: '0.75rem 1.5rem',
-              background: glassColor,
-              backdropFilter: `blur(${blur}px)`,
-              border: `1px solid ${borderColor}`,
-              color: textColor,
-              borderRadius: '1rem',
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              color: neonColor,
+              borderRadius: '0.5rem',
               fontSize: '0.875rem',
               whiteSpace: 'nowrap',
               zIndex: 50,
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              boxShadow: `0 0 ${5 * glowIntensity}px ${neonColor}, 
+                         0 0 ${10 * glowIntensity}px ${neonColor}, 
+                         0 0 ${20 * glowIntensity}px ${neonColor}`,
+              textShadow: `0 0 ${5 * glowIntensity}px ${neonColor}`,
+              border: `1px solid ${neonColor}`,
               marginBottom: position === 'top' ? '0.75rem' : 0,
               marginTop: position === 'bottom' ? '0.75rem' : 0,
               marginLeft: position === 'right' ? '0.75rem' : 0,
@@ -87,4 +93,4 @@ const Tooltip_2 = ({
   );
 };
 
-export default Tooltip_2;
+export default Tooltip_3;
