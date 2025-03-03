@@ -137,4 +137,3 @@ const Tooltip_10 = ({
 };
 
 export default Tooltip_10;
-
