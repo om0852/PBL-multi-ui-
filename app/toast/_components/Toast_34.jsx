@@ -6,7 +6,7 @@ import {
   useToastTimer,
 } from "./utils";
 
-const Toast_32 = ({
+const Toast_34 = ({
   message,
   close,
   icon,
@@ -52,9 +52,9 @@ const Toast_32 = ({
         };
       default:
         return {
-          initial: { scale: 0.9, y: -20, opacity: 0 },
-          animate: { scale: 1, y: 0, opacity: 1 },
-          exit: { scale: 0.9, y: -20, opacity: 0 },
+          initial: { scale: 0.9, opacity: 0 },
+          animate: { scale: 1, opacity: 1 },
+          exit: { scale: 0.9, opacity: 0 },
           transition: { type: "spring", stiffness: 200, damping: 20 }
         };
     }
@@ -69,24 +69,19 @@ const Toast_32 = ({
       onMouseLeave={handleMouseLeave}
       className={clsx(
         "relative z-50",
-        "w-[300px]",
+        "w-[320px]",
         positionClasses[position],
         stack ? "static" : "fixed",
       )}
     >
-      {/* Paper Container */}
+      {/* Neumorphic Container */}
       <div className={clsx(
-        "relative p-4 rounded-lg",
+        "relative p-4 rounded-2xl",
         theme === 'dark'
-          ? 'bg-gray-800 shadow-lg'
-          : 'bg-white shadow-lg',
+          ? 'bg-gray-800 shadow-[5px_5px_10px_rgba(0,0,0,0.3),-5px_-5px_10px_rgba(255,255,255,0.05)]'
+          : 'bg-gray-100 shadow-[5px_5px_10px_rgba(0,0,0,0.1),-5px_-5px_10px_rgba(255,255,255,0.8)]',
         "transform-gpu"
       )}>
-        {/* Paper Texture */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMCAwaDQwdjQwSDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjAgMjBtLTIwIDBhMjAgMjAgMCAxIDAgNDAgMCAyMCAyMCAwIDEgMC00MCAwIiBmaWxsPSJjdXJyZW50Q29sb3IiLz48L3N2Zz4=')]}" />
-        </div>
-
         {/* Progress Bar */}
         <motion.div
           initial={{ scaleX: 1 }}
@@ -94,8 +89,8 @@ const Toast_32 = ({
           transition={{ duration: duration / 1000, ease: "linear" }}
           style={{ originX: 0 }}
           className={clsx(
-            "absolute bottom-0 left-0 right-0 h-0.5",
-            theme === 'dark' ? 'bg-gray-600' : 'bg-gray-300'
+            "absolute bottom-0 left-0 right-0 h-1 rounded-full",
+            theme === 'dark' ? 'bg-blue-500/50' : 'bg-blue-400/50'
           )}
         />
 
@@ -103,16 +98,23 @@ const Toast_32 = ({
           {/* Icon */}
           {icon && (
             <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
               className={clsx(
-                "flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center",
+                "flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center",
                 theme === 'dark'
-                  ? 'bg-gray-700'
-                  : 'bg-gray-100'
+                  ? 'bg-gray-700 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.3),inset_-2px_-2px_4px_rgba(255,255,255,0.05)]'
+                  : 'bg-gray-200 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.1),inset_-2px_-2px_4px_rgba(255,255,255,0.8)]'
               )}
             >
-              <span className="text-lg">{icon}</span>
+              <span className="text-xl">{icon}</span>
             </motion.div>
           )}
 
@@ -132,10 +134,10 @@ const Toast_32 = ({
                 whileTap={{ scale: 0.98 }}
                 onClick={actionButton.onClick}
                 className={clsx(
-                  "mt-2 text-xs font-medium px-3 py-1 rounded-lg",
+                  "mt-2 text-xs font-medium px-4 py-1.5 rounded-lg",
                   theme === 'dark'
                     ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 )}
               >
                 {actionButton.label}
@@ -149,10 +151,10 @@ const Toast_32 = ({
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className={clsx(
-              "flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-lg",
+              "flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg",
               theme === 'dark'
                 ? 'text-gray-400 hover:text-white hover:bg-gray-700'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200'
             )}
           >
             ×
@@ -163,4 +165,4 @@ const Toast_32 = ({
   );
 };
 
-export default React.memo(Toast_32); 
+export default React.memo(Toast_34); 

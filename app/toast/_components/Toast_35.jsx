@@ -6,7 +6,7 @@ import {
   useToastTimer,
 } from "./utils";
 
-const Toast_32 = ({
+const Toast_35 = ({
   message,
   close,
   icon,
@@ -52,9 +52,9 @@ const Toast_32 = ({
         };
       default:
         return {
-          initial: { scale: 0.9, y: -20, opacity: 0 },
-          animate: { scale: 1, y: 0, opacity: 1 },
-          exit: { scale: 0.9, y: -20, opacity: 0 },
+          initial: { scale: 0.9, opacity: 0 },
+          animate: { scale: 1, opacity: 1 },
+          exit: { scale: 0.9, opacity: 0 },
           transition: { type: "spring", stiffness: 200, damping: 20 }
         };
     }
@@ -69,23 +69,38 @@ const Toast_32 = ({
       onMouseLeave={handleMouseLeave}
       className={clsx(
         "relative z-50",
-        "w-[300px]",
+        "w-[320px]",
         positionClasses[position],
         stack ? "static" : "fixed",
       )}
     >
-      {/* Paper Container */}
+      {/* Gradient Container */}
       <div className={clsx(
-        "relative p-4 rounded-lg",
+        "relative p-4 rounded-xl overflow-hidden",
         theme === 'dark'
-          ? 'bg-gray-800 shadow-lg'
-          : 'bg-white shadow-lg',
-        "transform-gpu"
+          ? 'bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900'
+          : 'bg-gradient-to-br from-purple-100 via-indigo-100 to-blue-100',
+        "shadow-lg"
       )}>
-        {/* Paper Texture */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBkPSJNMCAwaDQwdjQwSDB6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMjAgMjBtLTIwIDBhMjAgMjAgMCAxIDAgNDAgMCAyMCAyMCAwIDEgMC00MCAwIiBmaWxsPSJjdXJyZW50Q29sb3IiLz48L3N2Zz4=')]}" />
-        </div>
+        {/* Animated Gradient Background */}
+        <motion.div
+          animate={{
+            backgroundPosition: ['0% 0%', '100% 100%'],
+            opacity: [0.5, 0.8, 0.5]
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          className={clsx(
+            "absolute inset-0",
+            theme === 'dark'
+              ? 'bg-gradient-to-r from-purple-500/20 via-indigo-500/20 to-blue-500/20'
+              : 'bg-gradient-to-r from-purple-300/20 via-indigo-300/20 to-blue-300/20',
+            "bg-[size:200%_200%]"
+          )}
+        />
 
         {/* Progress Bar */}
         <motion.div
@@ -94,25 +109,34 @@ const Toast_32 = ({
           transition={{ duration: duration / 1000, ease: "linear" }}
           style={{ originX: 0 }}
           className={clsx(
-            "absolute bottom-0 left-0 right-0 h-0.5",
-            theme === 'dark' ? 'bg-gray-600' : 'bg-gray-300'
+            "absolute bottom-0 left-0 right-0 h-1",
+            theme === 'dark'
+              ? 'bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500'
+              : 'bg-gradient-to-r from-purple-400 via-indigo-400 to-blue-400'
           )}
         />
 
-        <div className="flex items-start space-x-3">
+        <div className="relative flex items-start space-x-3">
           {/* Icon */}
           {icon && (
             <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
               className={clsx(
-                "flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center",
+                "flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm",
                 theme === 'dark'
-                  ? 'bg-gray-700'
-                  : 'bg-gray-100'
+                  ? 'bg-white/10'
+                  : 'bg-white/40'
               )}
             >
-              <span className="text-lg">{icon}</span>
+              <span className="text-xl">{icon}</span>
             </motion.div>
           )}
 
@@ -132,10 +156,10 @@ const Toast_32 = ({
                 whileTap={{ scale: 0.98 }}
                 onClick={actionButton.onClick}
                 className={clsx(
-                  "mt-2 text-xs font-medium px-3 py-1 rounded-lg",
+                  "mt-2 text-xs font-medium px-4 py-1.5 rounded-lg backdrop-blur-sm",
                   theme === 'dark'
-                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-white/10 text-white hover:bg-white/20'
+                    : 'bg-white/40 text-gray-900 hover:bg-white/60'
                 )}
               >
                 {actionButton.label}
@@ -149,10 +173,10 @@ const Toast_32 = ({
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             className={clsx(
-              "flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-lg",
+              "flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg backdrop-blur-sm",
               theme === 'dark'
-                ? 'text-gray-400 hover:text-white hover:bg-gray-700'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                ? 'text-white/70 hover:text-white bg-white/10 hover:bg-white/20'
+                : 'text-gray-600 hover:text-gray-900 bg-white/40 hover:bg-white/60'
             )}
           >
             ×
@@ -163,4 +187,4 @@ const Toast_32 = ({
   );
 };
 
-export default React.memo(Toast_32); 
+export default React.memo(Toast_35); 
