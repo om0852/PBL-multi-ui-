@@ -28,7 +28,7 @@ const WavePulsingBadge = ({ text, color = "bg-teal-500" }) => {
         `}
       </style>
     </span>
-  );
 };
+);
 
 export default WavePulsingBadge;
